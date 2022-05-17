@@ -1,7 +1,7 @@
 package carrinhoDeCompras
 
 import Utils.*
-import produtos.Produtos
+import produtos.Produto
 import produtos.bebidas.Refrigerante
 import produtos.bebidas.Suco
 import produtos.lanches.XBurger
@@ -14,18 +14,18 @@ import kotlin.system.exitProcess
 
 class CarrinhoDeCompras {
 
-    val carrinhoDeCompras = mutableMapOf<Int, Produtos>()
+    val carrinhoDeCompras = mutableMapOf<Int, Produto>()
     var codigoDoProduto: Int = 1
     var totalFinal = 0
 
-    private fun geraCodigoProduto(produto: Produtos): Int {
+    private fun geraCodigoProduto(produto: Produto): Int {
         codigoDoProduto += 1
         carrinhoDeCompras[codigoDoProduto] = produto
         return codigoDoProduto
     }
 
-    internal fun adicionaProdutoCarrinho(produtos: Produtos) {
-        geraCodigoProduto(produtos)
+    internal fun adicionaProdutoCarrinho(produto: Produto) {
+        geraCodigoProduto(produto)
         mostraCarrinhoDeCompras()
     }
 
