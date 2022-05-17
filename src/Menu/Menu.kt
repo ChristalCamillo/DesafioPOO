@@ -53,10 +53,12 @@ open class Menu {
         when(opcaoMenuBebidas){
             1 -> {
                 carrinhoCompras.selecionarRefigerante()
+                carrinhoCompras.mostrarProdutos()
                 menuInicial()
             }
             2 -> {
                 carrinhoCompras.selecionarSuco()
+                carrinhoCompras.mostrarProdutos()
                 menuInicial()
             }
         }
@@ -71,11 +73,13 @@ open class Menu {
         when(opcaoMenuLanches){
             1 -> {
                 carrinhoCompras.selecionarXBurger()
+                carrinhoCompras.mostrarProdutos()
                 menuInicial()
             }
 
             2 -> {
                 carrinhoCompras.selecionarXSalada()
+                carrinhoCompras.mostrarProdutos()
                 menuInicial()
             }
     }
