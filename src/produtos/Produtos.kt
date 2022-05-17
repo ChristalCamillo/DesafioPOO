@@ -1,5 +1,7 @@
 package produtos
 
-abstract class Produtos(open var nome: String = "", open var quantidade: Int = 0, open var valor: Int = 0, open var codigo: Int = 0) {
-
+abstract class Produtos {
+    abstract var nome: String
+    abstract var quantidade: Int
+    abstract var valor: Int
 }

@@ -6,7 +6,6 @@ import produtos.bebidas.Refrigerante
 import produtos.bebidas.Suco
 import produtos.lanches.XBurger
 import produtos.lanches.XSalada
-import kotlin.system.exitProcess
 
 //a classe carrinho de compras serve para adicionar o código, quantidade, nome e
 //valor do lanche e mostrar o valor total do pedido até aquele momento.
@@ -14,143 +13,69 @@ import kotlin.system.exitProcess
 
 class CarrinhoDeCompras {
 
-    val carrinhoDeCompras = mutableMapOf<Int, Produtos>()
-    var codigoDoProduto: Int = 1
-    var totalFinal = 0
+    val carrinhoDeCompras = mutableMapOf<Int, ArrayList<Produtos>>()
+    var codigoDoProduto: Int = 0
 
-    private fun geraCodigoProduto(produto: Produtos): Int {
+    private fun guardarProdutoCarrinho(listaProdutos: ArrayList<Produtos>): Int {
         codigoDoProduto += 1
-        carrinhoDeCompras[codigoDoProduto] = produto
+        carrinhoDeCompras[codigoDoProduto] = listaProdutos
         return codigoDoProduto
     }
 
-    internal fun adicionaProdutoCarrinho(produtos: Produtos) {
-        geraCodigoProduto(produtos)
-        mostraCarrinhoDeCompras()
-    }
-
-    fun mostraCarrinhoDeCompras() {
+    fun mostrarProdutos() {
         if (carrinhoDeCompras.isEmpty()) {
-            println("Seu carrinho está vazio, adicione produtos para continuar.")
+            println("Carrinho de compras vazio")
         } else {
-            println("*** Seu carrinho de compras ***\n")
-            carrinhoDeCompras.forEach { (codigo, produto) ->
-                println("Código: $codigo\n" +
-                        "Tipo de produto: ${produto.nome}\n" +
-                        "Valor unitário: ${produto.valor}\n" +
-                        "Quantidade: ${produto.quantidade}\n" +
-                        "Valor total dos produtos escolhidos: ${calcularValorProduto(produto.quantidade, produto.valor)}\n" +
-                        "***\n")
-                calculaValorTotal()
-            }
-        }
-    }
-
-    internal fun calcularValorProduto(quantidade: Int, valor: Int): Int {
-        return valor * quantidade
-    }
-
-    internal fun calculaValorTotal(): Int {
-        carrinhoDeCompras.forEach { (_, produto) ->
-            totalFinal += calcularValorProduto(produto.quantidade, produto.valor)
-        }
-        mostraValorFinal(totalFinal)
-        return totalFinal
-    }
-
-    private fun mostraValorFinal(totalFinal: Int) {
-        println("Valor total do carrinho: $totalFinal\n")
-    }
-
-    internal fun removeItem() {
-        try {
-            println("Digite o código do produto que deseja excluir do carrinho")
-            val codigo = readln().toInt()
-            if (codigo < 0) {
-                throw IllegalArgumentException()
-            } else {
-                if (codigo in carrinhoDeCompras) {
-                    carrinhoDeCompras.remove(codigo)
-                    mostraCarrinhoDeCompras()
-                } else {
-                    MSG_CODIGO_INEXISTENTE
+            carrinhoDeCompras.forEach { (chave, valor) ->
+                println("Código do produto: $chave")
+                valor.forEach {
+                    println("${it.quantidade} ${it.nome} - Valor total: R$ ${it.quantidade * it.valor}")
                 }
             }
-        } catch (e: IllegalArgumentException) {
-            MSG_VALOR_INVALIDO
-            removeItem()
-        } catch (e: NumberFormatException) {
-            MSG_OPC_INVALIDA
-            removeItem()
-        } catch (e: UnsupportedOperationException) {
-            MSG_CODIGO_INVALIDO
-            removeItem()
         }
-
     }
 
-    internal fun editarItem() {
-
-        try {
-            println("Digite o código do produto que deseja alterar")
-            val codigo = readln().toInt()
-
-            if (codigo < 0) {
-                throw IllegalArgumentException()
-            } else {
-                if (codigo in carrinhoDeCompras) {
-
-                    println("Que produto deseja escolher no lugar?\n" +
-                            "[1] X-Burger\n" +
-                            "[2] X-Salada\n" +
-                            "[3] Refrigerante\n" +
-                            "[4] Suco\n" +
-                            "[5] Desistir da compra (sair do menu)")
-                    when (readln().toInt()) {
-                        1 -> {
-                            val novoProduto = XBurger()
-                            Utilitaria.solicitarQtd("Quantos XBurger?")
-                            carrinhoDeCompras[codigo] = novoProduto
-                            mostraCarrinhoDeCompras()
-                        }
-                        2 -> {
-                            val novoProduto = XSalada()
-                            Utilitaria.solicitarQtd("Quantos XSalada?")
-                            carrinhoDeCompras[codigo] = novoProduto
-                            mostraCarrinhoDeCompras()
-                        }
-                        3 -> {
-                            val novoProduto = Refrigerante()
-                            Utilitaria.solicitarQtd("Quantos Refrigerantes?")
-                            carrinhoDeCompras[codigo] = novoProduto
-                            mostraCarrinhoDeCompras()
-                        }
-                        4 -> {
-                            val novoProduto = Suco()
-                            Utilitaria.solicitarQtd("Quantos sucos?")
-                            carrinhoDeCompras[codigo] = novoProduto
-                            mostraCarrinhoDeCompras()
-                        }
-                        5 -> exitProcess(0)
-                        else -> throw NumberFormatException()
-
-                    }
-
-                    println("*********************************************************")
-                    mostraCarrinhoDeCompras()
-
-                }
-            }
-        } catch (e: IllegalArgumentException) {
-            MSG_VALOR_INVALIDO
-            editarItem()
-        } catch (e: NumberFormatException) {
-            MSG_OPC_INVALIDA
-            editarItem()
-        } catch (e: UnsupportedOperationException) {
-            MSG_CODIGO_INVALIDO
-            editarItem()
+    fun removerProdutos() {
+        println("Digite o código do item que deseja remover")
+        val numero = Utilitaria.validarNumeroDigitado()
+        if (carrinhoDeCompras.containsKey(numero)) {
+            carrinhoDeCompras.remove(numero)
+            println("Item removido do carrinho")
+        } else {
+            println("Código não encontrado")
         }
-
     }
+
+    internal fun selecionarXBurger() {
+        val qnt = Utilitaria.solicitarQtd("Quantos XBurger?")
+        val xBurger = XBurger("XBurger", qnt, VALOR_XBURGER)
+        val listaProdutos: ArrayList<Produtos> = ArrayList()
+        listaProdutos.add(xBurger)
+        guardarProdutoCarrinho(listaProdutos)
+    }
+
+    internal fun selecionarXSalada() {
+        val qnt = Utilitaria.solicitarQtd("Quantos XSalada?")
+        val xSalada = XSalada("XSalada", qnt, VALOR_XSALADA)
+        val listaProdutos: ArrayList<Produtos> = ArrayList()
+        listaProdutos.add(xSalada)
+        guardarProdutoCarrinho(listaProdutos)
+    }
+
+    internal fun selecionarRefigerante() {
+        val qnt = Utilitaria.solicitarQtd("Quantos Refrigerantes?")
+        val refigerante = Refrigerante("Refrigerante", qnt, VALOR_REFRI)
+        val listaProdutos: ArrayList<Produtos> = ArrayList()
+        listaProdutos.add(refigerante)
+        guardarProdutoCarrinho(listaProdutos)
+    }
+
+    internal fun selecionarSuco() {
+        val qnt = Utilitaria.solicitarQtd("Quantos sucos?")
+        val suco = Suco("Suco", qnt, VALOR_SUCO)
+        val listaProdutos: ArrayList<Produtos> = ArrayList()
+        listaProdutos.add(suco)
+        guardarProdutoCarrinho(listaProdutos)
+    }
+
 }

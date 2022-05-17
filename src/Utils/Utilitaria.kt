@@ -22,4 +22,18 @@ class Utilitaria {
                 solicitarQtd(mensagem)
             }
         }
+
+        fun validarNumeroDigitado(): Int {
+            return try {
+                var opcaoSelecionada = readln().toInt()
+                while (opcaoSelecionada <= 0) {
+                    println(MSG_OPC_INVALIDA)
+                    opcaoSelecionada = readln().toInt()
+                }
+                opcaoSelecionada
+            } catch (exception: NumberFormatException) {
+                println(MSG_VALOR_INVALIDO)
+                validarNumeroDigitado()
+            }
+        }
 }}

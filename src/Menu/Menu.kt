@@ -1,132 +1,83 @@
 package Menu
 
-import Utils.MSG_FMT_INVALIDO
-import Utils.MSG_OPC_INVALIDA
+import Utils.Utilitaria
 import carrinhoDeCompras.CarrinhoDeCompras
-import produtos.bebidas.Refrigerante
-import produtos.bebidas.Suco
-import produtos.lanches.XBurger
-import produtos.lanches.XSalada
 import kotlin.system.exitProcess
 
 open class Menu {
-    init {
 
-        val carrinhoDeCompras = CarrinhoDeCompras()
-        menuInicial(carrinhoDeCompras)
-    }
+    private var opcaoMenuInicial: Int = 0
+    private var opcaoMenuLanches: Int = 0
+    private var opcaoMenuBebidas: Int = 0
+    private val carrinhoCompras = CarrinhoDeCompras()
 
-    private fun menuInicial(carrinhoDeCompras: CarrinhoDeCompras) {
-        try {
+    internal fun menuInicial() {
+
             println(
-                "Você deseja comprar:\n" +
-                        "[1] Lanche\n" +
-                        "[2] Bebida\n" +
-                        "[3] Incluir, Editar ou Remover itens\n" +
-                        "[4] Desejo sair do sistema"
+                "Você deseja:\n" +
+                        "[1] Comprar Lanche\n" +
+                        "[2] Comprar Bebida\n" +
+                        "[3] Ir para o carrinho\n" +
+                        "[4] Remover um pedido do carrinho\n" +
+                        "[5] Desejo sair do sistema"
             )
-            when (readln().toInt()) {
-                1 -> menuLanche(carrinhoDeCompras)
-                2 -> menuBebida(carrinhoDeCompras)
-                3 -> menuSecundario(carrinhoDeCompras)
-                4 -> exitProcess(0)
-                else -> throw NumberFormatException()
+            opcaoMenuInicial = Utilitaria.validarNumeroDigitado()
+        when(opcaoMenuInicial){
+            1 -> {
+                menuLanches()
             }
-        } catch (e: NumberFormatException) {
-            MSG_FMT_INVALIDO
-            menuInicial(carrinhoDeCompras)
-        } catch (e: IllegalArgumentException) {
-            MSG_OPC_INVALIDA
-            menuInicial(carrinhoDeCompras)
-        }
-
-    }
-
-    open fun menuSecundario(carrinhoDeCompras: CarrinhoDeCompras) {
-        try {
-            println("O que deseja fazer agora?\n" +
-                    "[1] Incluir mais itens\n" +
-                    "[2] Editar item do carrinho de compras\n" +
-                    "[3] Remover item do carrinho de compras\n" +
-                    "[4] Encerrar compra\n" +
-                    "[5] Sair do sistema")
-            when (readln().toInt()) {
-                1 -> menuInicial(carrinhoDeCompras)
-                2 -> {
-                    carrinhoDeCompras.editarItem()
-                    menuSecundario(carrinhoDeCompras)
-                }
-                3 -> {
-                    carrinhoDeCompras.removeItem()
-                    menuSecundario(carrinhoDeCompras)
-                }
-                4 -> {
-                    exitProcess(0)
-                }
-                else -> throw NumberFormatException()
+            2 -> {
+                menuBebidas()
             }
-        } catch (e: NumberFormatException) {
-            MSG_FMT_INVALIDO
-            menuSecundario(carrinhoDeCompras)
-        } catch (e: IllegalArgumentException) {
-            MSG_OPC_INVALIDA
-            menuSecundario(carrinhoDeCompras)
+            3 -> {
+                carrinhoCompras.mostrarProdutos()
+                menuInicial()
+            }
+            4 -> {
+                carrinhoCompras.removerProdutos()
+                menuInicial()
+            }
+            5 -> {
+                exitProcess(0)
+            }
         }
     }
 
-    private fun menuBebida(carrinhoDeCompras: CarrinhoDeCompras) {
-        try {
-            println("Que bebida deseja comprar?\n" +
+    private fun menuBebidas() {
+        println(
+            "Que bebida deseja comprar?\n" +
                     "[1] Refrigerante R$8.0\n" +
-                    "[2] Suco R$6.0\n" +
-                    "[3] Sair do sistema\n")
-            when (readln().toInt()) {
-                1 -> {
-                    val refrigerante = Refrigerante()
-                    refrigerante.criaRefrigerante(carrinhoDeCompras)
-                }
-                2 -> {
-                    val suco = Suco()
-                    suco.criaSuco(carrinhoDeCompras)
-
-                }
-                3 -> exitProcess(0)
-                else -> throw NumberFormatException()
+                    "[2] Suco R$6.0\n"
+        )
+        opcaoMenuBebidas = Utilitaria.validarNumeroDigitado()
+        when(opcaoMenuBebidas){
+            1 -> {
+                carrinhoCompras.selecionarRefigerante()
+                menuInicial()
             }
-        } catch (e: NumberFormatException) {
-            println("Opção inválida! Tente novamente.")
-            menuBebida(carrinhoDeCompras)
-        } catch (e: IllegalArgumentException) {
-            println("Formato inválido, para escolher o item, você deve informar o número dele.")
-            menuBebida(carrinhoDeCompras)
+            2 -> {
+                carrinhoCompras.selecionarSuco()
+                menuInicial()
+            }
         }
     }
 
-    private fun menuLanche(carrinhoDeCompras: CarrinhoDeCompras) {
+    private fun menuLanches() {
 
-        try {
             println("Que lanche deseja comprar?\n" +
                     "[1] X-Burger R$10.0\n" +
-                    "[2] X-Salada R$12.0\n" +
-                    "[3] Sair do sistema\n")
-            when (readln().toInt()) {
-                1 -> {
-                    val xBurger = XBurger("")
-                    xBurger.criaXBurger(carrinhoDeCompras)
-                    menuSecundario(carrinhoDeCompras)
-                }
-                2 -> {
-                    val xSalada = XSalada()
-                    xSalada.criaXSalada(carrinhoDeCompras)
-                    menuSecundario(carrinhoDeCompras)
-                }
-                3 -> exitProcess(0)
-                else -> throw NumberFormatException()
+                    "[2] X-Salada R$12.0\n")
+        opcaoMenuLanches = Utilitaria.validarNumeroDigitado()
+        when(opcaoMenuLanches){
+            1 -> {
+                carrinhoCompras.selecionarXBurger()
+                menuInicial()
             }
-        } catch (e: NumberFormatException) {
-            MSG_OPC_INVALIDA
-            menuLanche(carrinhoDeCompras)
-        }
 
+            2 -> {
+                carrinhoCompras.selecionarXSalada()
+                menuInicial()
+            }
     }
+}
 }

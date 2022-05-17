@@ -1,5 +1,6 @@
 import Menu.Menu
 
 fun main() {
-    Menu()
+    val menu = Menu()
+    menu.menuInicial()
 }
