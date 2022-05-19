@@ -9,9 +9,7 @@ import produtos.Produto
 class CarrinhoDeCompras {
 
     val produtosComCodigo = hashMapOf<Int, Produto>()
-//    val carrinhoDeCompras = mutableMapOf<Int, Produto>()
     val produtos = mutableListOf<Produto>()
-//    var codigoInicialDosProdutos: Int = 1
 
     fun adicionaItem(produto: Produto, quantidade: Int) {
         repeat(quantidade) {
@@ -26,10 +24,6 @@ class CarrinhoDeCompras {
         produtos.forEach {
             produtosComCodigo[++codigo] = it
         }
-
-        //carrinhoDeCompras[codigoDoProduto] = produto
-        //codigoInicialDosProdutos += 1
-        //return codigoDoProduto
     }
 
     private fun mostraCarrinhoDeCompras(quantidade: Int) {
@@ -40,20 +34,11 @@ class CarrinhoDeCompras {
             produtosComCodigo.forEach { (codigo, produto) ->
                 println("Código: $codigo\n" +
                         "Tipo de produto: ${produto.retornaNome()}\n" +
-                        //"Tipo de produto: ${produtos.first().retornaNome()}\n" +
                         "Valor unitário: ${produto.retornaValor()}\n" +
-                        //"Valor unitário: ${produtos.first().retornaValor()}\n" +
-                        "Quantidade: $quantidade\n" +
-                        "Valor total dos produtos escolhidos: ${calculaValorProduto(quantidade, produto.retornaValor())}\n" +
-                        //"Valor total dos produtos escolhidos: ${calculaValorProduto(quantidade, produtos.first().retornaValor())}\n" +
                         "***\n")
             }
             calculaValorTotal()
         }
-    }
-
-    private fun calculaValorProduto(quantidade: Int, valor: Int): Int {
-        return valor * quantidade
     }
 
     private fun calculaValorTotal() {
@@ -162,7 +147,4 @@ class CarrinhoDeCompras {
 //
 //    }
 //
-//    override fun pegaValorProduto() {
-//        TODO("Not yet implemented")
-//    }
 }
