@@ -1,4 +1,4 @@
-import Menu.Menu
+import menu.Menu
 
 fun main() {
     val menu = Menu()

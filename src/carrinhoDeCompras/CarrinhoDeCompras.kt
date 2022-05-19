@@ -13,8 +13,8 @@ import produtos.lanches.XSalada
 
 class CarrinhoDeCompras {
 
-    val carrinhoDeCompras = mutableMapOf<Int, ArrayList<Produtos>>()
-    var codigoDoProduto: Int = 0
+    private val carrinhoDeCompras = mutableMapOf<Int, ArrayList<Produtos>>()
+    private var codigoDoProduto: Int = 0
 
     private fun guardarProdutoCarrinho(listaProdutos: ArrayList<Produtos>): Int {
         codigoDoProduto += 1
