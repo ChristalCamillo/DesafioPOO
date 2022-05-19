@@ -43,7 +43,7 @@ class Menu {
 
     }
 
-    open fun menuSecundario() {
+    fun menuSecundario() {
         try {
             println("O que deseja fazer agora?\n" +
                     "[1] Incluir mais itens\n" +

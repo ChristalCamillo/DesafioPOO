@@ -16,7 +16,7 @@ class CarrinhoDeCompras {
             produtos.add(produto)
         }
         geraCodigoProdutos(produtos)
-        mostraCarrinhoDeCompras(quantidade)
+        mostraCarrinhoDeCompras()
     }
 
     private fun geraCodigoProdutos(produtos: MutableList<Produto>) {
@@ -26,7 +26,7 @@ class CarrinhoDeCompras {
         }
     }
 
-    private fun mostraCarrinhoDeCompras(quantidade: Int) {
+    private fun mostraCarrinhoDeCompras() {
         if (produtos.isEmpty()) {
             println("Seu carrinho está vazio, adicione produtos para continuar.")
         } else {
