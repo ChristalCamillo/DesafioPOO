@@ -1,13 +1,6 @@
 package carrinhoDeCompras
 
-import Utils.*
-import produtos.CarrinhoInterface
 import produtos.Produto
-import produtos.bebidas.Refrigerante
-import produtos.bebidas.Suco
-import produtos.lanches.XBurger
-import produtos.lanches.XSalada
-import kotlin.system.exitProcess
 
 //a classe carrinho de compras serve para adicionar o código, quantidade, nome e
 //valor do lanche e mostrar o valor total do pedido até aquele momento.
@@ -15,56 +8,51 @@ import kotlin.system.exitProcess
 
 class CarrinhoDeCompras {
 
-//    val produtosComCodigo = mutableMapOf<Int, List<Produto>>()
+    val produtosComCodigo = hashMapOf<Int, Produto>()
 //    val carrinhoDeCompras = mutableMapOf<Int, Produto>()
     val produtos = mutableListOf<Produto>()
 //    var codigoInicialDosProdutos: Int = 1
-
-//    private fun geraCodigoProduto(produto: Produto): Int {
-//        codigoInicialDosProdutos += 1
-//        carrinhoDeCompras[codigoDoProduto] = produto
-//        return codigoDoProduto
-//    }
 
     fun adicionaItem(produto: Produto, quantidade: Int) {
         repeat(quantidade) {
             produtos.add(produto)
         }
-//        geraCodigoProduto(produto)
+        geraCodigoProdutos(produtos)
         mostraCarrinhoDeCompras(quantidade)
     }
 
-    fun mostraCarrinhoDeCompras(quantidade: Int) {
+    private fun geraCodigoProdutos(produtos: MutableList<Produto>) {
+        var codigo = 0
+        produtos.forEach {
+            produtosComCodigo[++codigo] = it
+        }
+
+        //carrinhoDeCompras[codigoDoProduto] = produto
+        //codigoInicialDosProdutos += 1
+        //return codigoDoProduto
+    }
+
+    private fun mostraCarrinhoDeCompras(quantidade: Int) {
         if (produtos.isEmpty()) {
             println("Seu carrinho está vazio, adicione produtos para continuar.")
         } else {
             println("*** Seu carrinho de compras ***\n")
-            produtos.groupBy {
-                produto -> produto.retornaNome()
-            }.forEach { (codigo, produtos) ->
+            produtosComCodigo.forEach { (codigo, produto) ->
                 println("Código: $codigo\n" +
-                        "Tipo de produto: ${produtos.first().retornaNome()}\n" +
-                                "Valor unitário: ${produtos.first().retornaValor()}\n" +
-                                "Quantidade: $quantidade\n" +
-                                "Valor total dos produtos escolhidos: ${calcularValorProduto(quantidade, produtos.first().retornaValor())}\n" +
-                                "***\n")
+                        "Tipo de produto: ${produto.retornaNome()}\n" +
+                        //"Tipo de produto: ${produtos.first().retornaNome()}\n" +
+                        "Valor unitário: ${produto.retornaValor()}\n" +
+                        //"Valor unitário: ${produtos.first().retornaValor()}\n" +
+                        "Quantidade: $quantidade\n" +
+                        "Valor total dos produtos escolhidos: ${calculaValorProduto(quantidade, produto.retornaValor())}\n" +
+                        //"Valor total dos produtos escolhidos: ${calculaValorProduto(quantidade, produtos.first().retornaValor())}\n" +
+                        "***\n")
             }
-
             calculaValorTotal()
-//            produtos.forEach { produto ->
-//                println(/*"Código: $codigo\n" + */
-//                        "Tipo de produto: ${produto.retornaNome()}\n" +
-//                        "Valor unitário: ${produto.retornaValor()}\n" +
-//                        "Quantidade: $quantidade\n" +
-//                        "Valor total dos produtos escolhidos: ${calcularValorProduto(quantidade, produto.retornaValor())}\n" +
-//                        "***\n")
-//
-//                calculaValorTotal(quantidade)
-//            }
         }
     }
 
-    private fun calcularValorProduto(quantidade: Int, valor: Int): Int {
+    private fun calculaValorProduto(quantidade: Int, valor: Int): Int {
         return valor * quantidade
     }
 
